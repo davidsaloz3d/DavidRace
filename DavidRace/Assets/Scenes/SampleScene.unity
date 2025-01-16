@@ -1685,7 +1685,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100064, guid: 0fb4610dba67fc24cb2a6674fb155fc1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: 0fb4610dba67fc24cb2a6674fb155fc1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2814,7 +2814,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100064, guid: 0fb4610dba67fc24cb2a6674fb155fc1, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 400038, guid: 0fb4610dba67fc24cb2a6674fb155fc1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4868,7 +4868,7 @@ PrefabInstance:
     - target: {fileID: 2057960, guid: 98e2b8a7d6de642f8ae08a3cbb957b7a, type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1988385970}
+      objectReference: {fileID: 1357087299}
     - target: {fileID: 2057960, guid: 98e2b8a7d6de642f8ae08a3cbb957b7a, type: 3}
       propertyPath: orthographic size
       value: 72.44
@@ -5442,43 +5442,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 9079521213188006689, guid: 328b5f5f755b96040a0219c78a2909e2, type: 3}
   m_PrefabInstance: {fileID: 437135424}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &441133761
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_IsAlphaChannelOptional: 0
-  serializedVersion: 6
-  m_Width: 257
-  m_Height: 257
-  m_AntiAliasing: 1
-  m_MipCount: -1
-  m_DepthStencilFormat: 94
-  m_ColorFormat: 4
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 1
-  m_UseDynamicScale: 0
-  m_UseDynamicScaleExplicit: 0
-  m_BindMS: 0
-  m_EnableCompatibleFormat: 1
-  m_EnableRandomWrite: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
-  m_ShadowSamplingMode: 2
 --- !u!1 &447540646
 GameObject:
   m_ObjectHideFlags: 0
@@ -6552,9 +6515,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9238e2057aaf2447ac4b81601b0b2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cpCrossed: 0
-  NumeroCoche: 3
-  CarPosition: 1
+  carNumber: 0
+  currentCheckpoint: 0
+  lapsCompleted: 0
   raceManager: {fileID: 1908386666}
 --- !u!1001 &543896433
 PrefabInstance:
@@ -7487,9 +7450,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9238e2057aaf2447ac4b81601b0b2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cpCrossed: 0
-  NumeroCoche: 2
-  CarPosition: 2
+  carNumber: 0
+  currentCheckpoint: 0
+  lapsCompleted: 0
   raceManager: {fileID: 1908386666}
 --- !u!1 &637446219
 GameObject:
@@ -12420,9 +12383,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9238e2057aaf2447ac4b81601b0b2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cpCrossed: 0
-  NumeroCoche: 0
-  CarPosition: 4
+  carNumber: 0
+  currentCheckpoint: 0
+  lapsCompleted: 0
   raceManager: {fileID: 1908386666}
 --- !u!1 &1052702918
 GameObject:
@@ -16033,6 +15996,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1812744319}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!84 &1357087299
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_IsAlphaChannelOptional: 0
+  serializedVersion: 6
+  m_Width: 257
+  m_Height: 257
+  m_AntiAliasing: 1
+  m_MipCount: -1
+  m_DepthStencilFormat: 94
+  m_ColorFormat: 4
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 1
+  m_UseDynamicScale: 0
+  m_UseDynamicScaleExplicit: 0
+  m_BindMS: 0
+  m_EnableCompatibleFormat: 1
+  m_EnableRandomWrite: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
+  m_ShadowSamplingMode: 2
 --- !u!1 &1357392490 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100064, guid: 0fb4610dba67fc24cb2a6674fb155fc1, type: 3}
@@ -16069,9 +16069,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9238e2057aaf2447ac4b81601b0b2f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cpCrossed: 0
-  NumeroCoche: 1
-  CarPosition: 3
+  carNumber: 0
+  currentCheckpoint: 0
+  lapsCompleted: 0
   raceManager: {fileID: 1908386666}
 --- !u!1001 &1360131151
 PrefabInstance:
@@ -21479,42 +21479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd5201ae9a9e9ac4289990d177d8b93d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Cp: {fileID: 4198600412138683266, guid: 63161168e0032b243b56b46549914b14, type: 3}
-  CpHolder: {fileID: 647936853}
-  Coches:
-  - {fileID: 413636327}
-  - {fileID: 1357392490}
-  - {fileID: 634220099}
-  - {fileID: 536811661}
-  CpPosition:
-  - {fileID: 1878582068}
-  - {fileID: 892971424}
-  - {fileID: 1111045202}
-  - {fileID: 548585936}
-  - {fileID: 1931818973}
-  - {fileID: 1386527340}
-  - {fileID: 237869201}
-  - {fileID: 1625711692}
-  - {fileID: 1369311173}
-  - {fileID: 1097053897}
-  - {fileID: 545899923}
-  - {fileID: 2135543821}
-  - {fileID: 1137341685}
-  - {fileID: 330187960}
-  - {fileID: 2134115683}
-  - {fileID: 606278531}
-  - {fileID: 1484850865}
-  - {fileID: 2079514764}
-  - {fileID: 926780987}
-  - {fileID: 308134003}
-  - {fileID: 1562364397}
-  - {fileID: 941527982}
-  - {fileID: 1795807627}
-  - {fileID: 1274056611}
-  - {fileID: 519008620}
-  - {fileID: 1509092283}
-  CpPaCadaCoche: []
-  PosicionTxt: {fileID: 1921446394}
+  cars: []
+  checkpoints: []
+  positionText: {fileID: 0}
+  totalCheckpoints: 0
+  totalLaps: 3
 --- !u!4 &1908386667
 Transform:
   m_ObjectHideFlags: 0
@@ -21638,8 +21607,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -280, y: 179}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -267.0378, y: 170.85}
+  m_SizeDelta: {x: 185.9243, y: 46.301}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1921446394
 MonoBehaviour:
@@ -21654,7 +21623,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.19607843, g: 0.19607843, b: 0.19607843, a: 1}
+  m_Color: {r: 0, g: 0.15249906, b: 0.8018868, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -21663,8 +21632,8 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 27
-    m_FontStyle: 0
+    m_FontSize: 41
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 10
     m_MaxSize: 70
@@ -21674,7 +21643,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'POS: 4/4'
+  m_Text: 'POS: 2/2'
 --- !u!222 &1921446395
 CanvasRenderer:
   m_ObjectHideFlags: 0

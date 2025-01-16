@@ -3,92 +3,95 @@ using UnityEngine.UI;
 
 public class RaceManager : MonoBehaviour
 {
-    public GameObject Cp;
-    public GameObject CpHolder;
+    public GameObject[] cars;          // Array de coches en la carrera
+    public Transform[] checkpoints;   // Posiciones de los checkpoints
+    public Text positionText;         // Texto para mostrar la posición del jugador
 
-    public GameObject[] Coches;
-    public Transform[] CpPosition;
-    
-    public GameObject[] CpPaCadaCoche;
+    public int totalCheckpoints;      // Número total de checkpoints en el circuito
+    public int totalLaps = 3;         // Número total de vueltas
 
-    private int CochesTotales;
-    private int ChekpointTotales;
+    private int[] lapsCompleted;      // Vueltas completadas por cada coche
+    private int[] currentCheckpoints; // Último checkpoint cruzado por cada coche
+    private float[] progress;         // Progreso acumulativo en la pista para cada coche
 
-    public Text PosicionTxt;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        CochesTotales = Coches.Length;
-        ChekpointTotales = CpHolder.transform.childCount;
+        totalCheckpoints = checkpoints.Length;
 
-        SetCheckpoint();
-        setCarPostion();
-    }
+        lapsCompleted = new int[cars.Length];
+        currentCheckpoints = new int[cars.Length];
+        progress = new float[cars.Length];
 
-    void SetCheckpoint(){
-        CpPosition = new Transform[ChekpointTotales];
-
-        for(int i = 0; i < ChekpointTotales; i++){
-            CpPosition[i] = CpHolder.transform.GetChild(i).transform;
-        }
-
-        CpPaCadaCoche = new GameObject[CochesTotales];
-
-        for(int i = 0; i < CochesTotales; i++){
-            CpPaCadaCoche[i] = Instantiate(Cp, CpPosition[0].position, CpPosition[0].rotation);
-            CpPaCadaCoche[i].name = "CP " + i;
-            CpPaCadaCoche[i].layer = 6 + i;
+        for (int i = 0; i < cars.Length; i++)
+        {
+            var carManager = cars[i].GetComponent<CarManager>();
+            carManager.carNumber = i;
+            carManager.raceManager = this;
         }
     }
 
-    void setCarPostion(){
-        for(int i = 0; i < CochesTotales; i++){
-            Coches[i].GetComponent<Car_CP_Manager>().CarPosition = i + 1;
-            Coches[i].GetComponent<Car_CP_Manager>().NumeroCoche = i;
-        }
-
-        PosicionTxt.text = "POS: " + Coches[0].GetComponent<Car_CP_Manager>().CarPosition + "/" + CochesTotales;
-    }
-
-    public void CocheCollectCP(int carNumber, int CpNumber){
-        CpPaCadaCoche[carNumber].transform.position = CpPosition[CpNumber].transform.position;
-        CpPaCadaCoche[carNumber].transform.rotation = CpPosition[CpNumber].transform.rotation;
-
-        comparePosition(carNumber);
-    }
-
-    void comparePosition(int carNumber){
-        if(Coches[carNumber].GetComponent<Car_CP_Manager>().CarPosition > 1){
-            GameObject currentCar = Coches[carNumber];
-            int currentCarPosition = currentCar.GetComponent<Car_CP_Manager>().CarPosition;
-            int currentCarCP = currentCar.GetComponent<Car_CP_Manager>().cpCrossed;
-
-            GameObject carInFront = null;
-            int carInFrontPos = 0;
-            int carInFrontCP = 0;
-
-            for(int i = 0; i < CochesTotales; i++){
-                if(Coches[i].GetComponent<Car_CP_Manager>().CarPosition == currentCarPosition-1){
-                    carInFront = Coches[i];
-                    carInFrontCP = carInFront.GetComponent<Car_CP_Manager>().cpCrossed;
-                    carInFrontPos = carInFront.GetComponent<Car_CP_Manager>().CarPosition;
-                    break;
-                }
-            }
-
-            if(currentCarCP > carInFrontCP){
-                currentCar.GetComponent<Car_CP_Manager>().CarPosition = currentCarPosition - 1;
-                carInFront.GetComponent<Car_CP_Manager>().CarPosition = carInFrontPos + 1;
-            }
-
-        PosicionTxt.text = "POS: " + Coches[0].GetComponent<Car_CP_Manager>().CarPosition + "/" + CochesTotales;
-
-        }
-
-    }
-    // Update is called once per frame
-    void Update()
+    public void UpdateCarProgress(int carNumber, int laps, int checkpoint)
     {
-        
+        lapsCompleted[carNumber] = laps;
+        currentCheckpoints[carNumber] = checkpoint;
+
+        UpdatePositions();
+    }
+
+    void UpdatePositions()
+    {
+        // Calcular progreso acumulativo para cada coche
+        for (int i = 0; i < cars.Length; i++)
+        {
+            progress[i] = CalculateProgress(i);
+        }
+
+        // Ordenar coches por vueltas, checkpoints y progreso
+        System.Array.Sort(cars, (a, b) =>
+        {
+            int indexA = a.GetComponent<CarManager>().carNumber;
+            int indexB = b.GetComponent<CarManager>().carNumber;
+
+            // 1. Comparar por vueltas completadas
+            if (lapsCompleted[indexA] != lapsCompleted[indexB])
+                return lapsCompleted[indexB].CompareTo(lapsCompleted[indexA]);
+
+            // 2. Comparar por checkpoints cruzados
+            if (currentCheckpoints[indexA] != currentCheckpoints[indexB])
+                return currentCheckpoints[indexB].CompareTo(currentCheckpoints[indexA]);
+
+            // 3. Comparar por progreso acumulativo
+            return progress[indexB].CompareTo(progress[indexA]);
+        });
+
+        // Actualizar posiciones y texto
+        for (int i = 0; i < cars.Length; i++)
+        {
+            var carManager = cars[i].GetComponent<CarManager>();
+            carManager.carNumber = i + 1;
+
+            if (carManager.carNumber == 1) // Mostrar posición del jugador (coche 0)
+            {
+                positionText.text = "POS: " + (i + 1) + "/" + cars.Length;
+            }
+        }
+    }
+
+    float CalculateProgress(int carIndex)
+    {
+        // Progreso acumulado entre checkpoints
+        float progress = 0f;
+        for (int i = 0; i < currentCheckpoints[carIndex]; i++)
+        {
+            int nextIndex = (i + 1) % totalCheckpoints;
+            progress += Vector3.Distance(checkpoints[i].position, checkpoints[nextIndex].position);
+        }
+
+        // Añadir distancia al siguiente checkpoint
+        int nextCheckpoint = (currentCheckpoints[carIndex] + 1) % totalCheckpoints;
+        progress += Vector3.Distance(cars[carIndex].transform.position, checkpoints[nextCheckpoint].position);
+
+        return progress;
     }
 }
+

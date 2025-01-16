@@ -1,29 +1,33 @@
 using UnityEngine;
 
-public class Car_CP_Manager : MonoBehaviour
+public class CarManager : MonoBehaviour
 {
-    public int cpCrossed = 0;
-    public int NumeroCoche;
-
-    public int CarPosition;
+    public int carNumber;          // Identificador único para cada coche
+    public int currentCheckpoint; // Último checkpoint cruzado
+    public int lapsCompleted;     // Vueltas completadas
 
     public RaceManager raceManager;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        
-    }
+        if (other.CompareTag("Checkpoint"))
+        {
+            Checkpoint checkpoint = other.GetComponent<Checkpoint>();
 
-    private void OnTriggerEnter(Collider other){
-        if(other.gameObject.CompareTag("CP")){
-            cpCrossed += 1;
-            raceManager.CocheCollectCP(NumeroCoche,cpCrossed);
+            if (checkpoint.index == (currentCheckpoint + 1) % raceManager.totalCheckpoints)
+            {
+                // Actualizar progreso del checkpoint
+                currentCheckpoint = checkpoint.index;
+
+                // Si es el último checkpoint, incrementar vueltas
+                if (currentCheckpoint == 0)
+                {
+                    lapsCompleted++;
+                }
+
+                // Notificar al RaceManager
+                raceManager.UpdateCarProgress(carNumber, lapsCompleted, currentCheckpoint);
+            }
         }
     }
 }
