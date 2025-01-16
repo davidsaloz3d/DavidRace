@@ -10,7 +10,7 @@ public class CarManager : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Checkpoint"))
+        if (other.CompareTag("CP"))
         {
             Checkpoint checkpoint = other.GetComponent<Checkpoint>();
 
@@ -20,9 +20,10 @@ public class CarManager : MonoBehaviour
                 currentCheckpoint = checkpoint.index;
 
                 // Si es el último checkpoint, incrementar vueltas
-                if (currentCheckpoint == 0)
+                if (currentCheckpoint == 25)
                 {
                     lapsCompleted++;
+                    currentCheckpoint = 0;
                 }
 
                 // Notificar al RaceManager

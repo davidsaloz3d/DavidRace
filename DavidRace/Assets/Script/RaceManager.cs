@@ -68,9 +68,8 @@ public class RaceManager : MonoBehaviour
         for (int i = 0; i < cars.Length; i++)
         {
             var carManager = cars[i].GetComponent<CarManager>();
-            carManager.carNumber = i + 1;
 
-            if (carManager.carNumber == 1) // Mostrar posición del jugador (coche 0)
+            if (carManager.carNumber == 0) // Mostrar posición del jugador (coche 0)
             {
                 positionText.text = "POS: " + (i + 1) + "/" + cars.Length;
             }
@@ -81,11 +80,11 @@ public class RaceManager : MonoBehaviour
     {
         // Progreso acumulado entre checkpoints
         float progress = 0f;
-        for (int i = 0; i < currentCheckpoints[carIndex]; i++)
-        {
-            int nextIndex = (i + 1) % totalCheckpoints;
-            progress += Vector3.Distance(checkpoints[i].position, checkpoints[nextIndex].position);
-        }
+
+        progress += lapsCompleted[carIndex] * totalCheckpoints;
+
+        progress += currentCheckpoints[carIndex];
+        
 
         // Añadir distancia al siguiente checkpoint
         int nextCheckpoint = (currentCheckpoints[carIndex] + 1) % totalCheckpoints;
