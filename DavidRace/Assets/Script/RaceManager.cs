@@ -2,16 +2,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityStandardAssets.Vehicles.Car;
+using Unity.VisualScripting;
 
 public class RaceManager : MonoBehaviour
 {
     public GameObject[] cars;          // Array de coches en la carrera
     public Transform[] checkpoints;   // Array de checkpoints en el circuito
-    [SerializeField] TMP_Text positionText, lapsText;         // Texto para mostrar la posición del jugador
+    [SerializeField] TMP_Text positionText, lapsText, tTime;         // Texto para mostrar la posición del jugador
 
     [SerializeField] GameObject FinDeCarrera;
 
+
     private int vueltasCoche;
+
+    bool inicio = false;
 
     public int totalLaps = 3;         // Número total de vueltas en la carrera
     public int totalCheckpoints;      // Número total de checkpoints en el circuito
@@ -19,10 +24,17 @@ public class RaceManager : MonoBehaviour
     private int[] lapsCompleted;      // Vueltas completadas por cada coche
     private int[] currentCheckpoints; // Último checkpoint cruzado por cada coche
     private float[] lastCheckpointTime;
+
+    [SerializeField] float time = 4;
+
     void Start()
     {
         totalCheckpoints = checkpoints.Length;
 
+        for (int i = 0; i < cars.Length; i++)
+        {
+            cars[i].GetComponent<CarController>().Velocidad0();
+        }
 
         // Inicializar los arrays para los coches
         lapsCompleted = new int[cars.Length];
@@ -40,8 +52,8 @@ public class RaceManager : MonoBehaviour
         int posInicial;
         // Establecer la posición inicial del coche según el identificador (invertido)
         posInicial = cars[0].GetComponent<CarManager>().position;  // Asigna la posición invertida
-        
-    positionText.text = "POS: " + (posInicial + 1) + "/" + cars.Length;
+
+        positionText.text = "POS: " + (posInicial + 1) + "/" + cars.Length;
     }
 
     public void UpdateCarProgress(int carNumber, int laps, int checkpoint)
@@ -84,27 +96,32 @@ public class RaceManager : MonoBehaviour
         }
     }
 
-    void LapsRealizadas(){
+    void LapsRealizadas()
+    {
         vueltasCoche = cars[0].GetComponent<CarManager>().lapsCompleted;
 
-        Debug.Log ( "Coche Rojo:" + vueltasCoche);
+        Debug.Log("Coche Rojo:" + vueltasCoche);
 
-        if(vueltasCoche < 1){
-            lapsText.text = "Lap: " + (vueltasCoche + 1) + "/" + 3 ;
-        }else{
+        if (vueltasCoche < 1)
+        {
+            lapsText.text = "Lap: " + (vueltasCoche + 1) + "/" + 3;
+        }
+        else
+        {
             FinDeCarrera.SetActive(true);
             for (int i = 0; i < cars.Length; i++)
-        {
-            cars[i].SetActive(false);
+            {
+                cars[i].SetActive(false);
+            }
+
+            Invoke("Creditos", 3);
+
         }
 
-        Invoke("Creditos", 3);
-
-        }
-        
     }
 
-    void Creditos(){
+    void Creditos()
+    {
         SceneManager.LoadScene("Creditos");
     }
 
@@ -113,6 +130,39 @@ public class RaceManager : MonoBehaviour
     {
         UpdatePositions();
         LapsRealizadas();
+
+        if (!inicio)
+        {
+            time = time - Time.deltaTime;
+            if (time < 0)
+            {
+                time = 0;
+
+
+                tTime.text = "GO!";
+                inicio = true;
+                Invoke("Run", 1);
+
+            }
+            else
+            {
+                float sec;
+                sec = Mathf.Floor(time % 60);
+                tTime.text = sec.ToString("00");
+            }
+
+
+        }
+
+    }
+
+    void Run()
+    {
+        for (int i = 0; i < cars.Length; i++)
+        {
+            cars[i].GetComponent<CarController>().Velocidad100();
+        }
+        tTime.text = "";
     }
 }
 
