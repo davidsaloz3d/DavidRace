@@ -49,11 +49,7 @@ public class RaceManager : MonoBehaviour
             carManager.raceManager = this;
         }
 
-        int posInicial;
-        // Establecer la posición inicial del coche según el identificador (invertido)
-        posInicial = cars[0].GetComponent<CarManager>().position;  // Asigna la posición invertida
-
-        positionText.text = "POS: " + (posInicial + 1) + "/" + cars.Length;
+        
     }
 
     public void UpdateCarProgress(int carNumber, int laps, int checkpoint)
@@ -89,7 +85,7 @@ public class RaceManager : MonoBehaviour
         for (int i = 0; i < cars.Length; i++)
         {
             var carManager = cars[i].GetComponent<CarManager>();
-            if (carManager.carNumber == 0) // Coche del jugador
+            if (carManager.carNumber == 3) // Coche del jugador
             {
                 positionText.text = "POS: " + (i + 1) + "/" + cars.Length;
             }
@@ -98,13 +94,13 @@ public class RaceManager : MonoBehaviour
 
     void LapsRealizadas()
     {
-        vueltasCoche = cars[0].GetComponent<CarManager>().lapsCompleted;
+        vueltasCoche = cars[3].GetComponent<CarManager>().lapsCompleted;
 
         Debug.Log("Coche Rojo:" + vueltasCoche);
 
         if (vueltasCoche < 1)
         {
-            lapsText.text = "Lap: " + (vueltasCoche + 1) + "/" + 3;
+            lapsText.text = "LAP: " + (vueltasCoche + 1) + "/" + 3;
         }
         else
         {
