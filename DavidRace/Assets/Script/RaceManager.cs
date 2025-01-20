@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 using UnityStandardAssets.Vehicles.Car;
 using Unity.VisualScripting;
+using UnityEditor;
 
 public class RaceManager : MonoBehaviour
 {
@@ -27,8 +28,21 @@ public class RaceManager : MonoBehaviour
 
     [SerializeField] float time = 4;
 
+    [SerializeField] GameObject ChasisRojo;
+    [SerializeField] GameObject ChasisAzul;
+
+    [SerializeField] GameObject menuPausa;
+    [SerializeField] GameObject menu;
+
     void Start()
     {
+        if(MenuControl.CocheRojoSeleccionado == true){
+            ChasisRojo.SetActive(true);
+            ChasisAzul.SetActive(false);
+        }else{
+            ChasisRojo.SetActive(false);
+            ChasisAzul.SetActive(true);
+        }
         totalCheckpoints = checkpoints.Length;
 
         for (int i = 0; i < cars.Length; i++)
@@ -131,6 +145,13 @@ public class RaceManager : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                menuPausa.SetActive(true);
+                menu.SetActive(false);
+                Time.timeScale = 0;
+            }
+
         UpdatePositions();
         LapsRealizadas();
 
