@@ -49,7 +49,7 @@ public class RaceManager : MonoBehaviour
             carManager.raceManager = this;
         }
 
-        
+
     }
 
     public void UpdateCarProgress(int carNumber, int laps, int checkpoint)
@@ -94,25 +94,32 @@ public class RaceManager : MonoBehaviour
 
     void LapsRealizadas()
     {
-        vueltasCoche = cars[3].GetComponent<CarManager>().lapsCompleted;
+        
 
-        Debug.Log("Coche Rojo:" + vueltasCoche);
-
-        if (vueltasCoche < 1)
+        for (int i = 0; i < cars.Length; i++)
         {
-            lapsText.text = "LAP: " + (vueltasCoche + 1) + "/" + 3;
-        }
-        else
-        {
-            FinDeCarrera.SetActive(true);
-            for (int i = 0; i < cars.Length; i++)
+            var carLaps = cars[i].GetComponent<CarManager>();
+            if (carLaps.carNumber == 3) // Coche del jugador
             {
-                cars[i].SetActive(false);
+                if (carLaps.lapsCompleted < 3)
+                {
+                    lapsText.text = "LAP: " + (carLaps.lapsCompleted + 1) + "/" + 3;
+                }
+                else
+                {
+                    FinDeCarrera.SetActive(true);
+                    for (int j = 0; j < cars.Length; j++)
+                    {
+                        cars[j].SetActive(false);
+                    }
+
+                    Invoke("Creditos", 3);
+
+                }
             }
-
-            Invoke("Creditos", 3);
-
         }
+
+
 
     }
 
@@ -130,7 +137,7 @@ public class RaceManager : MonoBehaviour
         if (!inicio)
         {
             time = time - Time.deltaTime;
-            if (time < 0)
+            if (time < 1)
             {
                 time = 0;
 
@@ -144,7 +151,7 @@ public class RaceManager : MonoBehaviour
             {
                 float sec;
                 sec = Mathf.Floor(time % 60);
-                tTime.text = sec.ToString("00");
+                tTime.text = sec.ToString("0");
             }
 
 

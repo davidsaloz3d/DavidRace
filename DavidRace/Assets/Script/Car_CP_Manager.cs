@@ -6,7 +6,6 @@ public class CarManager : MonoBehaviour
     public int currentCheckpoint; // Último checkpoint cruzado
     public int lapsCompleted;     // Vueltas completadas
 
-    public int position;
 
     public RaceManager raceManager;
 
