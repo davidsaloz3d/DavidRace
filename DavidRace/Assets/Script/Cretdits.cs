@@ -13,6 +13,7 @@ public class Cretdits : MonoBehaviour
     void Update()
     {
         if(Input.anyKey){
+            MenuControl.CocheSeleccionado = 1;
             SceneManager.LoadScene("Menu");
         }
     }

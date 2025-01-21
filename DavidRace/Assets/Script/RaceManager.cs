@@ -30,18 +30,25 @@ public class RaceManager : MonoBehaviour
 
     [SerializeField] GameObject ChasisRojo;
     [SerializeField] GameObject ChasisAzul;
+    [SerializeField] GameObject ChasisGris;
 
     [SerializeField] GameObject menuPausa;
     [SerializeField] GameObject menu;
 
     void Start()
     {
-        if(MenuControl.CocheRojoSeleccionado == true){
+        if(MenuControl.CocheSeleccionado == 1){
             ChasisRojo.SetActive(true);
             ChasisAzul.SetActive(false);
-        }else{
+            ChasisGris.SetActive(false);
+        }else if(MenuControl.CocheSeleccionado == 2){
             ChasisRojo.SetActive(false);
             ChasisAzul.SetActive(true);
+            ChasisGris.SetActive(false);
+        }else if(MenuControl.CocheSeleccionado == 3){
+            ChasisRojo.SetActive(false);
+            ChasisAzul.SetActive(false);
+            ChasisGris.SetActive(true);
         }
         totalCheckpoints = checkpoints.Length;
 

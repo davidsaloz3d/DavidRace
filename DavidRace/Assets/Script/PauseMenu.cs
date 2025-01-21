@@ -26,6 +26,7 @@ public class PauseMenu : MonoBehaviour
 
     public void Salir(){
         Time.timeScale = 1;
+        MenuControl.CocheSeleccionado = 1;
         SceneManager.LoadScene("Menu");
         
     }
